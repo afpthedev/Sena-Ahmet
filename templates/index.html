@@ -94,7 +94,7 @@
     <div class="container">
         <div class="heart" id="heart"></div>
         <button onclick="increaseLove()">Sevgiyi Artır</button>
-        <p class="message" id="message">Ahmet Senanur'u çok seviyor!</p>
+        <p class="message" id="message">Ahmet Sena'i çok seviyor!</p>
         <div id="milestones"></div>
     </div>
     <script>
@@ -128,7 +128,7 @@
             
             void heart.offsetWidth;
             
-            message.textContent = `Sena Ahmet'i ${loveCount} kere çok seviyor!`;
+            message.textContent = `Ahmet Sena'i ${loveCount} kere çok seviyor!`;
             
             checkMilestones();
         }
@@ -138,7 +138,7 @@
             milestonesDiv.innerHTML = '';
             milestones.forEach(milestone => {
                 if (loveCount >= milestone) {
-                    milestonesDiv.innerHTML += `<p>🏆 ${milestone} sevgi milestone'una ulaştınız!</p>`;
+ ya                    milestonesDiv.innerHTML += `<p>🏆 ${milestone} sevgi milestone'una ulaştınız!</p>`;
                 }
             });
         }
