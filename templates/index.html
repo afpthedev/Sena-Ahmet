@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Özel Sevgi Mesajı</title>
+    <title>Sena'nın Sevgi Mesajı</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700&display=swap');
         
@@ -83,26 +83,10 @@
             transform: translateY(-3px);
             box-shadow: 0 7px 20px rgba(0,0,0,0.3);
         }
-        #customMessage {
-            margin-top: 20px;
-            padding: 10px;
-            width: 80%;
-            border-radius: 5px;
-            border: 1px solid #ff4b4b;
-        }
         #milestones {
             margin-top: 20px;
             font-size: 16px;
             color: #333;
-        }
-        #shareButton {
-            background-color: #4267B2;
-        }
-        #shareButton:hover {
-            background-color: #365899;
-        }
-        .hidden {
-            display: none;
         }
     </style>
 </head>
@@ -110,9 +94,7 @@
     <div class="container">
         <div class="heart" id="heart"></div>
         <button onclick="increaseLove()">Sevgiyi Artır</button>
-        <button id="shareButton" onclick="shareMessage()">Paylaş</button>
-        <p class="message" id="message">Ahmet seni 1 kere seviyor!</p>
-        <input type="text" id="customMessage" placeholder="Özel mesajınızı yazın..." class="hidden">
+        <p class="message" id="message">Sena Ahmet'i çok seviyor!</p>
         <div id="milestones"></div>
     </div>
     <script>
@@ -146,13 +128,9 @@
             
             void heart.offsetWidth;
             
-            message.textContent = `Ahmet seni ${loveCount} kere seviyor!`;
+            message.textContent = `Sena Ahmet'i ${loveCount} kere çok seviyor!`;
             
             checkMilestones();
-            
-            if (loveCount === 5) {
-                document.getElementById('customMessage').classList.remove('hidden');
-            }
         }
 
         function checkMilestones() {
@@ -163,26 +141,6 @@
                     milestonesDiv.innerHTML += `<p>🏆 ${milestone} sevgi milestone'una ulaştınız!</p>`;
                 }
             });
-        }
-
-        function shareMessage() {
-            const customMessage = document.getElementById('customMessage').value;
-            const shareText = customMessage || `Ahmet beni ${loveCount} kere seviyor! Sen de kendi sevgi sayacını oluştur!`;
-            const shareUrl = 'https://sevgi-sayaci.com'; // Varsayılan bir URL
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Sevgi Sayacı',
-                    text: shareText,
-                    url: shareUrl,
-                }).then(() => {
-                    console.log('Paylaşım başarılı');
-                }).catch((error) => {
-                    console.log('Paylaşım hatası:', error);
-                });
-            } else {
-                alert('Tarayıcınız paylaşım özelliğini desteklemiyor. Lütfen manuel olarak paylaşın: ' + shareText);
-            }
         }
 
         function smallConfetti() {
