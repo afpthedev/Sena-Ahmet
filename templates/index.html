@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Özel Sevgi Mesajı</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700&display=swap');
         
         body {
             display: flex;
@@ -14,11 +14,15 @@
             height: 100vh;
             background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
             margin: 0;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Roboto', sans-serif;
             overflow: hidden;
         }
         .container {
             text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
         .heart {
             width: 150px;
@@ -26,6 +30,10 @@
             background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23ff4b4b' d='M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z'/%3E%3C/svg%3E") no-repeat center center;
             background-size: contain;
             margin: 0 auto 20px;
+            transition: transform 0.3s ease;
+        }
+        .heart:hover {
+            transform: scale(1.1);
         }
         @keyframes heartBeat {
             0% { transform: scale(1); }
@@ -68,11 +76,33 @@
             border-radius: 50px;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin: 10px;
         }
         button:hover {
             background-color: #ff6b6b;
             transform: translateY(-3px);
             box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+        }
+        #customMessage {
+            margin-top: 20px;
+            padding: 10px;
+            width: 80%;
+            border-radius: 5px;
+            border: 1px solid #ff4b4b;
+        }
+        #milestones {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+        #shareButton {
+            background-color: #4267B2;
+        }
+        #shareButton:hover {
+            background-color: #365899;
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
@@ -80,20 +110,23 @@
     <div class="container">
         <div class="heart" id="heart"></div>
         <button onclick="increaseLove()">Sevgiyi Artır</button>
+        <button id="shareButton" onclick="shareMessage()">Paylaş</button>
         <p class="message" id="message">Ahmet seni 1 kere seviyor!</p>
+        <input type="text" id="customMessage" placeholder="Özel mesajınızı yazın..." class="hidden">
+        <div id="milestones"></div>
     </div>
     <script>
         let loveCount = 1;
+        const milestones = [10, 50, 100, 500, 1000];
         
         function increaseLove() {
             loveCount++;
             const heart = document.getElementById('heart');
             const message = document.getElementById('message');
+            const milestonesDiv = document.getElementById('milestones');
             
-            // Tüm animasyon sınıflarını kaldır
             heart.classList.remove('beat', 'jump', 'spin', 'pulse');
             
-            // loveCount'a göre farklı animasyonlar uygula
             if (loveCount % 40 === 0) {
                 heart.classList.add('pulse');
                 bigConfetti();
@@ -111,11 +144,45 @@
                 smallConfetti();
             }
             
-            // Reflow için
             void heart.offsetWidth;
             
-            // Mesajı güncelle
             message.textContent = `Ahmet seni ${loveCount} kere seviyor!`;
+            
+            checkMilestones();
+            
+            if (loveCount === 5) {
+                document.getElementById('customMessage').classList.remove('hidden');
+            }
+        }
+
+        function checkMilestones() {
+            const milestonesDiv = document.getElementById('milestones');
+            milestonesDiv.innerHTML = '';
+            milestones.forEach(milestone => {
+                if (loveCount >= milestone) {
+                    milestonesDiv.innerHTML += `<p>🏆 ${milestone} sevgi milestone'una ulaştınız!</p>`;
+                }
+            });
+        }
+
+        function shareMessage() {
+            const customMessage = document.getElementById('customMessage').value;
+            const shareText = customMessage || `Ahmet beni ${loveCount} kere seviyor! Sen de kendi sevgi sayacını oluştur!`;
+            const shareUrl = 'https://sevgi-sayaci.com'; // Varsayılan bir URL
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Sevgi Sayacı',
+                    text: shareText,
+                    url: shareUrl,
+                }).then(() => {
+                    console.log('Paylaşım başarılı');
+                }).catch((error) => {
+                    console.log('Paylaşım hatası:', error);
+                });
+            } else {
+                alert('Tarayıcınız paylaşım özelliğini desteklemiyor. Lütfen manuel olarak paylaşın: ' + shareText);
+            }
         }
 
         function smallConfetti() {
